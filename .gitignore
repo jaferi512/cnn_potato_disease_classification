@@ -1,0 +1,77 @@
+# ======================
+# Python
+# ======================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Virtual environments
+venv/
+env/
+.venv/
+torch-env/
+
+# ======================
+# Jupyter / Notebooks
+# ======================
+.ipynb_checkpoints/
+
+# ======================
+# PyTorch / ML artifacts
+# ======================
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.npz
+*.npy
+
+# Training outputs
+runs/
+logs/
+wandb/
+tensorboard/
+
+# Datasets (never commit raw data)
+data/
+datasets/
+
+# ======================
+# Matplotlib / plots
+# ======================
+*.png
+*.jpg
+*.jpeg
+*.svg
+*.pdf
+
+# ======================
+# OS / Editor
+# ======================
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# ======================
+# Environment / Secrets
+# ======================
+.env
+.env.*
+*.key
+*.pem
+
+# ======================
+# Cache / temp
+# ======================
+.cache/
+.mypy_cache/
+.pytest_cache/
+coverage/
