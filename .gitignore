@@ -75,3 +75,9 @@ Thumbs.db
 .mypy_cache/
 .pytest_cache/
 coverage/
+
+# ======================
+# Keep README images
+# ======================
+!assets/
+!assets/**
