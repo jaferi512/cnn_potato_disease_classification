@@ -1,76 +1,107 @@
-🥔 Potato Disease Classification using ResNet
-A deep learning project utilizing Residual Networks (ResNet) to identify and classify diseases in potato leaves. This tool aims to assist in early-stage crop pathology detection.
+# 🥔 Potato Leaf Disease Classification with ResNet-18
 
+![Python](https://img.shields.io/badge/Python-3.13-3776AB?logo=python&logoColor=white)
+![PyTorch](https://img.shields.io/badge/PyTorch-2.10-EE4C2C?logo=pytorch&logoColor=white)
+![torchvision](https://img.shields.io/badge/torchvision-0.25-EE4C2C)
+![scikit--learn](https://img.shields.io/badge/scikit--learn-1.8-F7931E?logo=scikitlearn&logoColor=white)
 
-🔍 Overview
-This project addresses the challenge of agricultural loss due to Early Blight and Late Blight. By leveraging a ResNet architecture, we utilize "skip connections" to train deeper networks without the vanishing gradient problem, resulting in high-accuracy classification.
+A deep learning project that classifies potato leaf images as **Early Blight**, **Late Blight** or **Healthy**. It uses **transfer learning** with a pre-trained **ResNet-18** convolutional neural network, aimed at early detection of crop disease.
 
-🏗 System Architecture
-The model pipeline follows these standard stages:
+## 🧭 Methodology
 
-Preprocessing: Resizing images to 224×224 and normalizing pixel values.
+![Methodology: dataset, preprocessing, ResNet-18 transfer learning, training and evaluation](assets/methodology.png)
 
-Data Augmentation: Random rotations, flips, and zooms to prevent overfitting.
+<sub>Editable vector source: [`assets/methodology.svg`](assets/methodology.svg)</sub>
 
-Feature Extraction: Using pre-trained ResNet layers.
+## 🔍 Overview
 
-Classification: A Fully Connected (FC) layer with Softmax activation.
+Early Blight (*Alternaria solani*) and Late Blight (*Phytophthora infestans*) cause major potato crop losses. This project fine-tunes an ImageNet-pre-trained ResNet-18 to recognise them from leaf photos. Its residual (skip) connections let deep networks train without vanishing gradients, and its pre-trained features transfer well to leaf textures and lesion patterns.
 
-⚙️ Installation & Setup
-1. Clone the Repository
+### Pipeline
 
-Bash
-git clone https://github.com/yourusername/potato-disease-resnet.git
-cd potato-disease-resnet
-2. Environment Setup
+| Stage | Details |
+|---|---|
+| **1. Dataset** | PlantVillage potato leaves: 2,152 images in 3 classes (Early Blight 1,000 · Late Blight 1,000 · Healthy 152), loaded with `torchvision.datasets.ImageFolder` |
+| **2. Preprocessing** | Train: `RandomResizedCrop(224)` + `RandomHorizontalFlip`. Validation: `Resize(256)` + `CenterCrop(224)`. Both splits are normalised with ImageNet mean/std |
+| **3. Model** | `torchvision` ResNet-18 with ImageNet weights. Convolutional backbone frozen, fully connected classifier trainable |
+| **4. Training** | Cross-entropy loss · SGD (lr 0.001, momentum 0.9) · batch size 4 · 2 epochs · Apple Silicon GPU (MPS) |
+| **5. Evaluation** | Weighted accuracy, precision, recall, F1-score and a confusion matrix, plus single-image inference |
 
-<details> <summary><b>Click to expand: macOS / Linux instructions</b></summary>
+## 📊 Results
 
-Bash
+Metrics reported by the notebook on the validation split:
+
+| Accuracy | Precision | Recall | F1-score |
+|:---:|:---:|:---:|:---:|
+| 96.65% | 96.76% | 96.65% | 96.68% |
+
+The notebook also plots the class distribution, sample images per class, the confusion matrix and a prediction on an unseen leaf image.
+
+## ⚙️ Installation & Setup
+
+**1. Clone the repository**
+
+```bash
+git clone https://github.com/jaferi512/cnn_potato_disease_classification.git
+cd cnn_potato_disease_classification
+```
+
+**2. Create an environment and install dependencies**
+
+<details>
+<summary><b>macOS / Linux</b></summary>
+
+```bash
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
+```
 </details>
 
-<details> <summary><b>Click to expand: Windows instructions</b></summary>
+<details>
+<summary><b>Windows</b></summary>
 
-Bash
+```bash
 python -m venv venv
 venv\Scripts\activate
 pip install -r requirements.txt
+```
 </details>
 
-📂 Dataset Structure
-Place your raw images in the potatoData/ directory. The notebook is configured to read from subfolders as labels:
+## 📂 Dataset Structure
 
-Plaintext
+Download the potato classes of the [PlantVillage dataset](https://www.kaggle.com/datasets/arjuntejaswi/plant-village) and arrange them as below. The folder names become the class labels.
+
+```text
 potatoData/
-├── Healthy/        # Images of healthy leaves
-├── Early_Blight/   # Images of Alternaria solani
-└── Late_Blight/    # Images of Phytophthora infestans
-🚀 Usage
-Ensure your virtual environment is active.
+├── train/
+│   ├── Potato___Early_blight/
+│   ├── Potato___Late_blight/
+│   └── Potato___healthy/
+└── val/
+    ├── Potato___Early_blight/
+    ├── Potato___Late_blight/
+    └── Potato___healthy/
+```
 
-Launch the notebook: jupyter notebook.
+## 🚀 Usage
 
-Open the .ipynb file and run the cells.
+1. Activate your virtual environment.
+2. Start Jupyter: `jupyter notebook`
+3. Open `PotatoLeafClassification.ipynb` and run all cells.
+4. The trained weights are saved as `potato_classification_model.pth`.
+5. To classify your own leaf, set `image_path` in the inference cell and run it.
 
-The notebook will automatically save the best-performing model as .h5 or .pth.
+> The notebook uses Apple Silicon's `mps` device. On other machines, change it to `cuda` or `cpu`.
 
-📊 Results
-Upon completion, the model generates:
+## 🛠 Tech Stack
 
-Accuracy: Typically >95% on the validation set.
+PyTorch · torchvision · scikit-learn · NumPy · Matplotlib · Seaborn · Pillow · Jupyter
 
-Confusion Matrix: To visualize which classes are being misidentified.
+## 🤝 Contributing
 
-Inference: A sample script to test the model on individual images.
-
-🤝 Contributing
-Fork the Project.
-
-Create your Feature Branch (git checkout -b feature/AmazingFeature).
-
-Commit your Changes (git commit -m 'Add some AmazingFeature').
-
-Push to the Branch (git push origin feature/AmazingFeature).
+1. Fork the project.
+2. Create a feature branch: `git checkout -b feature/AmazingFeature`
+3. Commit your changes: `git commit -m 'Add some AmazingFeature'`
+4. Push the branch: `git push origin feature/AmazingFeature`
+5. Open a pull request.

@@ -1,0 +1,323 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000" font-family="'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5F6F64"/>
+    </marker>
+    <marker id="arrowSm" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5F6F64"/>
+    </marker>
+    <linearGradient id="hdr" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#1B5E20"/>
+      <stop offset="1" stop-color="#2E7D32"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1600" height="1000" fill="#FFFFFF"/>
+  <rect width="1600" height="8" fill="url(#hdr)"/>
+
+  <!-- Title -->
+  <text x="40" y="66" font-size="38" font-weight="700" fill="#1B2A1F">Potato Leaf Disease Classification: Methodology</text>
+  <text x="40" y="102" font-size="19" fill="#4A5A4E">Transfer learning with a pre-trained ResNet-18 CNN (PyTorch) to detect Early Blight, Late Blight and Healthy leaves</text>
+  <g font-size="15" font-weight="600">
+    <rect x="1262" y="40" width="92" height="32" rx="16" fill="#E8F5E9" stroke="#A5D6A7"/>
+    <text x="1308" y="61" text-anchor="middle" fill="#1B5E20">PyTorch</text>
+    <rect x="1364" y="40" width="100" height="32" rx="16" fill="#E3F2FD" stroke="#90CAF9"/>
+    <text x="1414" y="61" text-anchor="middle" fill="#0D47A1">ResNet-18</text>
+    <rect x="1474" y="40" width="86" height="32" rx="16" fill="#FFF3E0" stroke="#FFCC80"/>
+    <text x="1517" y="61" text-anchor="middle" fill="#E65100">CNN</text>
+  </g>
+
+  <!-- ============ Stage cards ============ -->
+  <!-- Arrows between cards -->
+  <g stroke="#5F6F64" stroke-width="3" fill="none" marker-end="url(#arrow)">
+    <line x1="309" y1="340" x2="341" y2="340"/>
+    <line x1="625" y1="340" x2="657" y2="340"/>
+    <line x1="941" y1="340" x2="973" y2="340"/>
+    <line x1="1257" y1="340" x2="1289" y2="340"/>
+  </g>
+
+  <!-- Card 1: Dataset -->
+  <g transform="translate(30,150)">
+    <rect width="276" height="380" rx="14" fill="#FFFFFF" stroke="#D5E3D6" stroke-width="2"/>
+    <rect width="276" height="64" rx="14" fill="#2E7D32"/>
+    <rect y="44" width="276" height="20" fill="#2E7D32"/>
+    <circle cx="32" cy="32" r="17" fill="#FFFFFF"/>
+    <text x="32" y="39" text-anchor="middle" font-size="19" font-weight="700" fill="#2E7D32">1</text>
+    <text x="60" y="40" font-size="21" font-weight="700" fill="#FFFFFF">Dataset</text>
+
+    <text x="20" y="100" font-size="16" font-weight="700" fill="#1B2A1F">PlantVillage potato leaves</text>
+    <text x="20" y="124" font-size="15" fill="#4A5A4E">2,152 RGB images · 3 classes</text>
+
+    <g font-size="14" fill="#1B2A1F">
+      <text x="20" y="162">Early Blight</text>
+      <text x="256" y="162" text-anchor="end" font-weight="700">1,000</text>
+      <rect x="20" y="170" width="236" height="14" rx="4" fill="#C77800"/>
+      <text x="20" y="214">Late Blight</text>
+      <text x="256" y="214" text-anchor="end" font-weight="700">1,000</text>
+      <rect x="20" y="222" width="236" height="14" rx="4" fill="#6D4C41"/>
+      <text x="20" y="266">Healthy</text>
+      <text x="256" y="266" text-anchor="end" font-weight="700">152</text>
+      <rect x="20" y="274" width="236" height="14" rx="4" fill="#EEF3EE"/>
+      <rect x="20" y="274" width="36" height="14" rx="4" fill="#43A047"/>
+    </g>
+    <text x="20" y="326" font-size="14" fill="#4A5A4E">Loaded with ImageFolder</text>
+    <text x="20" y="347" font-size="14" fill="#4A5A4E">(folder name = class label)</text>
+  </g>
+
+  <!-- Card 2: Preprocessing -->
+  <g transform="translate(346,150)">
+    <rect width="276" height="380" rx="14" fill="#FFFFFF" stroke="#D5E3D6" stroke-width="2"/>
+    <rect width="276" height="64" rx="14" fill="#00897B"/>
+    <rect y="44" width="276" height="20" fill="#00897B"/>
+    <circle cx="32" cy="32" r="17" fill="#FFFFFF"/>
+    <text x="32" y="39" text-anchor="middle" font-size="19" font-weight="700" fill="#00897B">2</text>
+    <text x="60" y="40" font-size="21" font-weight="700" fill="#FFFFFF">Preprocessing</text>
+
+    <text x="20" y="100" font-size="15" font-weight="700" fill="#00695C">Training augmentation</text>
+    <g font-size="14.5" fill="#1B2A1F">
+      <text x="20" y="126">• RandomResizedCrop (224)</text>
+      <text x="20" y="150">• RandomHorizontalFlip</text>
+    </g>
+    <text x="20" y="190" font-size="15" font-weight="700" fill="#00695C">Validation</text>
+    <g font-size="14.5" fill="#1B2A1F">
+      <text x="20" y="216">• Resize (256)</text>
+      <text x="20" y="240">• CenterCrop (224)</text>
+    </g>
+    <text x="20" y="280" font-size="15" font-weight="700" fill="#00695C">Both splits</text>
+    <g font-size="14.5" fill="#1B2A1F">
+      <text x="20" y="306">• Convert to tensor</text>
+      <text x="20" y="330">• Normalize with ImageNet</text>
+      <text x="32" y="351">mean / std</text>
+    </g>
+  </g>
+
+  <!-- Card 3: Model -->
+  <g transform="translate(662,150)">
+    <rect width="276" height="380" rx="14" fill="#FFFFFF" stroke="#D5E3D6" stroke-width="2"/>
+    <rect width="276" height="64" rx="14" fill="#1565C0"/>
+    <rect y="44" width="276" height="20" fill="#1565C0"/>
+    <circle cx="32" cy="32" r="17" fill="#FFFFFF"/>
+    <text x="32" y="39" text-anchor="middle" font-size="19" font-weight="700" fill="#1565C0">3</text>
+    <text x="60" y="40" font-size="21" font-weight="700" fill="#FFFFFF">Transfer Learning</text>
+
+    <text x="20" y="100" font-size="16" font-weight="700" fill="#1B2A1F">ResNet-18 backbone</text>
+    <text x="20" y="124" font-size="15" fill="#4A5A4E">pre-trained on ImageNet</text>
+
+    <rect x="20" y="148" width="236" height="44" rx="10" fill="#E3EAF0" stroke="#78909C" stroke-width="1.5"/>
+    <text x="138" y="176" text-anchor="middle" font-size="15" font-weight="600" fill="#37474F">Conv layers: frozen</text>
+    <text x="138" y="212" text-anchor="middle" font-size="18" fill="#5F6F64">↓</text>
+    <rect x="20" y="222" width="236" height="44" rx="10" fill="#FFE0B2" stroke="#E65100" stroke-width="1.5"/>
+    <text x="138" y="250" text-anchor="middle" font-size="15" font-weight="600" fill="#BF360C">FC classifier: trainable</text>
+
+    <g font-size="14" fill="#4A5A4E">
+      <text x="20" y="306">Reuses general visual features,</text>
+      <text x="20" y="327">so only the classifier is trained:</text>
+      <text x="20" y="348">fast, and works with little data.</text>
+    </g>
+  </g>
+
+  <!-- Card 4: Training -->
+  <g transform="translate(978,150)">
+    <rect width="276" height="380" rx="14" fill="#FFFFFF" stroke="#D5E3D6" stroke-width="2"/>
+    <rect width="276" height="64" rx="14" fill="#6A1B9A"/>
+    <rect y="44" width="276" height="20" fill="#6A1B9A"/>
+    <circle cx="32" cy="32" r="17" fill="#FFFFFF"/>
+    <text x="32" y="39" text-anchor="middle" font-size="19" font-weight="700" fill="#6A1B9A">4</text>
+    <text x="60" y="40" font-size="21" font-weight="700" fill="#FFFFFF">Training</text>
+
+    <g>
+      <text x="20" y="98" font-size="12.5" font-weight="700" fill="#7B6A85" letter-spacing="1">LOSS</text>
+      <text x="20" y="119" font-size="16" fill="#1B2A1F">Cross-Entropy</text>
+      <text x="20" y="154" font-size="12.5" font-weight="700" fill="#7B6A85" letter-spacing="1">OPTIMIZER</text>
+      <text x="20" y="175" font-size="16" fill="#1B2A1F">SGD · lr 0.001 · momentum 0.9</text>
+      <text x="20" y="210" font-size="12.5" font-weight="700" fill="#7B6A85" letter-spacing="1">BATCH SIZE · EPOCHS</text>
+      <text x="20" y="231" font-size="16" fill="#1B2A1F">4 · 2</text>
+      <text x="20" y="266" font-size="12.5" font-weight="700" fill="#7B6A85" letter-spacing="1">HARDWARE</text>
+      <text x="20" y="287" font-size="16" fill="#1B2A1F">Apple Silicon GPU (MPS)</text>
+      <text x="20" y="322" font-size="12.5" font-weight="700" fill="#7B6A85" letter-spacing="1">OUTPUT</text>
+      <text x="20" y="343" font-size="16" fill="#1B2A1F">Model weights saved as .pth</text>
+    </g>
+  </g>
+
+  <!-- Card 5: Evaluation -->
+  <g transform="translate(1294,150)">
+    <rect width="276" height="380" rx="14" fill="#FFFFFF" stroke="#D5E3D6" stroke-width="2"/>
+    <rect width="276" height="64" rx="14" fill="#E65100"/>
+    <rect y="44" width="276" height="20" fill="#E65100"/>
+    <circle cx="32" cy="32" r="17" fill="#FFFFFF"/>
+    <text x="32" y="39" text-anchor="middle" font-size="19" font-weight="700" fill="#E65100">5</text>
+    <text x="60" y="40" font-size="21" font-weight="700" fill="#FFFFFF">Evaluation</text>
+
+    <text x="20" y="100" font-size="15" font-weight="700" fill="#BF360C">Weighted metrics</text>
+    <g font-size="14" font-weight="600" fill="#BF360C" text-anchor="middle">
+      <rect x="20" y="112" width="114" height="30" rx="8" fill="#FFF3E0" stroke="#FFCC80"/>
+      <text x="77" y="132">Accuracy</text>
+      <rect x="142" y="112" width="114" height="30" rx="8" fill="#FFF3E0" stroke="#FFCC80"/>
+      <text x="199" y="132">Precision</text>
+      <rect x="20" y="150" width="114" height="30" rx="8" fill="#FFF3E0" stroke="#FFCC80"/>
+      <text x="77" y="170">Recall</text>
+      <rect x="142" y="150" width="114" height="30" rx="8" fill="#FFF3E0" stroke="#FFCC80"/>
+      <text x="199" y="170">F1-score</text>
+    </g>
+
+    <text x="20" y="218" font-size="15" font-weight="700" fill="#BF360C">Confusion matrix</text>
+    <g stroke="#FFFFFF" stroke-width="2">
+      <rect x="20" y="230" width="30" height="30" fill="#E65100"/>
+      <rect x="50" y="230" width="30" height="30" fill="#FFE0B2"/>
+      <rect x="80" y="230" width="30" height="30" fill="#FFF3E0"/>
+      <rect x="20" y="260" width="30" height="30" fill="#FFE0B2"/>
+      <rect x="50" y="260" width="30" height="30" fill="#E65100"/>
+      <rect x="80" y="260" width="30" height="30" fill="#FFF3E0"/>
+      <rect x="20" y="290" width="30" height="30" fill="#FFF3E0"/>
+      <rect x="50" y="290" width="30" height="30" fill="#FFE0B2"/>
+      <rect x="80" y="290" width="30" height="30" fill="#E65100"/>
+    </g>
+    <g font-size="14" fill="#4A5A4E">
+      <text x="126" y="254">Per-class errors</text>
+      <text x="126" y="275">across Early Blight,</text>
+      <text x="126" y="296">Late Blight, Healthy</text>
+    </g>
+    <text x="20" y="352" font-size="14.5" fill="#1B2A1F"><tspan font-weight="700">Inference:</tspan> unseen leaf → class</text>
+  </g>
+
+  <!-- ============ Architecture panel ============ -->
+  <rect x="30" y="562" width="1540" height="396" rx="16" fill="#F6F9F6" stroke="#D5E3D6" stroke-width="2"/>
+  <text x="60" y="603" font-size="22" font-weight="700" fill="#1B2A1F">ResNet-18 transfer-learning architecture</text>
+  <g font-size="14" fill="#37474F">
+    <rect x="1236" y="586" width="22" height="22" rx="5" fill="#E3EAF0" stroke="#78909C" stroke-width="1.5"/>
+    <text x="1266" y="603">Frozen (ImageNet weights)</text>
+    <rect x="1446" y="586" width="22" height="22" rx="5" fill="#FFE0B2" stroke="#E65100" stroke-width="1.5"/>
+    <text x="1476" y="603">Trainable</text>
+  </g>
+
+  <!-- Flow arrows -->
+  <g stroke="#5F6F64" stroke-width="2.5" fill="none" marker-end="url(#arrowSm)">
+    <line x1="202" y1="700" x2="236" y2="700"/>
+    <line x1="372" y1="700" x2="396" y2="700"/>
+    <line x1="502" y1="700" x2="526" y2="700"/>
+    <line x1="662" y1="700" x2="686" y2="700"/>
+    <line x1="822" y1="700" x2="846" y2="700"/>
+    <line x1="982" y1="700" x2="1006" y2="700"/>
+    <line x1="1142" y1="700" x2="1166" y2="700"/>
+    <line x1="1282" y1="700" x2="1306" y2="700"/>
+    <line x1="1412" y1="700" x2="1436" y2="700"/>
+  </g>
+
+  <!-- Input -->
+  <rect x="60" y="625" width="140" height="150" rx="12" fill="#FFFFFF" stroke="#A5D6A7" stroke-width="2"/>
+  <g transform="translate(130,682) rotate(35)">
+    <path d="M0,-40 C30,-24 30,24 0,40 C-30,24 -30,-24 0,-40 Z" fill="#66BB6A" stroke="#2E7D32" stroke-width="2"/>
+    <line x1="0" y1="-36" x2="0" y2="46" stroke="#2E7D32" stroke-width="2"/>
+    <circle cx="-9" cy="-6" r="5" fill="#8D6E63"/>
+    <circle cx="10" cy="12" r="4" fill="#6D4C41"/>
+    <circle cx="-7" cy="20" r="3" fill="#8D6E63"/>
+  </g>
+  <text x="130" y="748" text-anchor="middle" font-size="14" font-weight="700" fill="#1B2A1F">Leaf image</text>
+  <text x="130" y="766" text-anchor="middle" font-size="13" fill="#4A5A4E">224 × 224 × 3</text>
+
+  <!-- Frozen layers -->
+  <g fill="#E3EAF0" stroke="#78909C" stroke-width="1.8">
+    <rect x="240" y="630" width="130" height="140" rx="10"/>
+    <rect x="400" y="640" width="100" height="120" rx="10"/>
+    <rect x="530" y="635" width="130" height="130" rx="10"/>
+    <rect x="690" y="635" width="130" height="130" rx="10"/>
+    <rect x="850" y="635" width="130" height="130" rx="10"/>
+    <rect x="1010" y="635" width="130" height="130" rx="10"/>
+    <rect x="1170" y="645" width="110" height="110" rx="10"/>
+  </g>
+  <g text-anchor="middle" fill="#263238">
+    <text x="305" y="684" font-size="15" font-weight="700">Conv 7×7</text>
+    <text x="305" y="706" font-size="13.5">64 filters, stride 2</text>
+    <text x="305" y="726" font-size="13.5">BN + ReLU</text>
+
+    <text x="450" y="694" font-size="15" font-weight="700">MaxPool</text>
+    <text x="450" y="716" font-size="13.5">3×3, stride 2</text>
+
+    <text x="595" y="684" font-size="15" font-weight="700">Stage 1</text>
+    <text x="595" y="706" font-size="13.5">2 residual blocks</text>
+    <text x="595" y="726" font-size="13.5">64 channels</text>
+
+    <text x="755" y="684" font-size="15" font-weight="700">Stage 2</text>
+    <text x="755" y="706" font-size="13.5">2 residual blocks</text>
+    <text x="755" y="726" font-size="13.5">128 channels</text>
+
+    <text x="915" y="684" font-size="15" font-weight="700">Stage 3</text>
+    <text x="915" y="706" font-size="13.5">2 residual blocks</text>
+    <text x="915" y="726" font-size="13.5">256 channels</text>
+
+    <text x="1075" y="684" font-size="15" font-weight="700">Stage 4</text>
+    <text x="1075" y="706" font-size="13.5">2 residual blocks</text>
+    <text x="1075" y="726" font-size="13.5">512 channels</text>
+
+    <text x="1225" y="694" font-size="15" font-weight="700">Global</text>
+    <text x="1225" y="714" font-size="15" font-weight="700">AvgPool</text>
+    <text x="1225" y="734" font-size="13.5">512-d vector</text>
+  </g>
+
+  <!-- Trainable head -->
+  <rect x="1310" y="650" width="100" height="100" rx="10" fill="#FFE0B2" stroke="#E65100" stroke-width="2"/>
+  <text x="1360" y="696" text-anchor="middle" font-size="15" font-weight="700" fill="#BF360C">Fully</text>
+  <text x="1360" y="716" text-anchor="middle" font-size="15" font-weight="700" fill="#BF360C">connected</text>
+
+  <!-- Output classes -->
+  <g font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">
+    <rect x="1440" y="645" width="112" height="30" rx="15" fill="#C77800"/>
+    <text x="1496" y="665">Early Blight</text>
+    <rect x="1440" y="685" width="112" height="30" rx="15" fill="#6D4C41"/>
+    <text x="1496" y="705">Late Blight</text>
+    <rect x="1440" y="725" width="112" height="30" rx="15" fill="#43A047"/>
+    <text x="1496" y="745">Healthy</text>
+  </g>
+
+  <!-- Bracket to residual block detail -->
+  <path d="M530,780 v8 h610 v-8" fill="none" stroke="#78909C" stroke-width="1.8"/>
+  <line x1="835" y1="788" x2="835" y2="808" stroke="#78909C" stroke-width="1.8"/>
+
+  <!-- Residual block detail -->
+  <rect x="530" y="808" width="610" height="132" rx="12" fill="#FFFFFF" stroke="#78909C" stroke-width="1.5" stroke-dasharray="6 5"/>
+  <text x="550" y="836" font-size="15" font-weight="700" fill="#1B2A1F">Residual block</text>
+  <path d="M572,890 V858 H975 V884" fill="none" stroke="#2E7D32" stroke-width="2.5" marker-end="url(#arrowSm)"/>
+  <text x="870" y="851" text-anchor="middle" font-size="13" font-weight="600" fill="#2E7D32">identity shortcut (skip connection)</text>
+  <circle cx="572" cy="902" r="14" fill="#E8F5E9" stroke="#2E7D32" stroke-width="2"/>
+  <text x="572" y="907" text-anchor="middle" font-size="15" font-style="italic" font-weight="700" fill="#1B2A1F">x</text>
+  <g stroke="#5F6F64" stroke-width="2" fill="none" marker-end="url(#arrowSm)">
+    <line x1="587" y1="902" x2="606" y2="902"/>
+    <line x1="780" y1="902" x2="798" y2="902"/>
+    <line x1="942" y1="902" x2="958" y2="902"/>
+    <line x1="992" y1="902" x2="1008" y2="902"/>
+    <line x1="1072" y1="902" x2="1092" y2="902"/>
+  </g>
+  <g fill="#E3EAF0" stroke="#78909C" stroke-width="1.5">
+    <rect x="610" y="884" width="168" height="36" rx="8"/>
+    <rect x="802" y="884" width="138" height="36" rx="8"/>
+    <rect x="1012" y="884" width="58" height="36" rx="8"/>
+  </g>
+  <g font-size="13.5" fill="#263238" text-anchor="middle">
+    <text x="694" y="907">3×3 Conv · BN · ReLU</text>
+    <text x="871" y="907">3×3 Conv · BN</text>
+    <text x="1041" y="907">ReLU</text>
+  </g>
+  <circle cx="975" cy="902" r="15" fill="#E8F5E9" stroke="#2E7D32" stroke-width="2"/>
+  <text x="975" y="908" text-anchor="middle" font-size="20" font-weight="700" fill="#2E7D32">+</text>
+  <text x="1112" y="907" text-anchor="middle" font-size="14" font-weight="700" fill="#1B2A1F">out</text>
+
+  <!-- Side notes -->
+  <text x="60" y="836" font-size="16" font-weight="700" fill="#1B2A1F">Why ResNet?</text>
+  <g font-size="14.5" fill="#4A5A4E">
+    <text x="60" y="862">Skip connections keep gradients flowing</text>
+    <text x="60" y="884">through deep networks. ImageNet features</text>
+    <text x="60" y="906">transfer well to leaf texture, colour</text>
+    <text x="60" y="928">and lesion patterns.</text>
+  </g>
+
+  <text x="1170" y="836" font-size="16" font-weight="700" fill="#1B2A1F">Prediction</text>
+  <g font-size="14.5" fill="#4A5A4E">
+    <text x="1170" y="862">The FC layer scores each class and the</text>
+    <text x="1170" y="884">highest score (argmax) is the predicted</text>
+    <text x="1170" y="906">disease for the leaf, used for both</text>
+    <text x="1170" y="928">evaluation and single-image inference.</text>
+  </g>
+
+  <text x="800" y="986" text-anchor="middle" font-size="14" fill="#7A897E">PyTorch · torchvision · scikit-learn · Matplotlib · Seaborn</text>
+</svg>
